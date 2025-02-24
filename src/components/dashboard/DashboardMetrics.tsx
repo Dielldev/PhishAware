@@ -20,7 +20,7 @@ import dynamic from 'next/dynamic'
 // Import local images
 import kaliImage from '@/assets/images/kali.jpg'
 
-const NoSSR = dynamic(() => Promise.resolve(({ children }) => <>{children}</>), {
+const NoSSR = dynamic<{ children: React.ReactNode }>(() => Promise.resolve(({ children }) => <>{children}</>), {
   ssr: false
 })
 

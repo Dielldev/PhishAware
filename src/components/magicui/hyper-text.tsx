@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, type HTMLMotionProps, type ElementType } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { motion, type HTMLMotionProps } from "framer-motion";
+import { useEffect, useRef, useState, type ElementType } from "react";
 import { type ComponentProps } from "react";
 
 type CharacterSet = string[] | readonly string[];

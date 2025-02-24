@@ -11,7 +11,6 @@
     "start": "next start",
     "lint": "next lint",
     "test": "echo \"Error: no test specified\" && exit 1"
-    
   },
   "keywords": [],
   "author": "",
@@ -22,6 +21,7 @@
     "@cloudinary/url-gen": "^1.21.0",
     "@prisma/client": "^5.22.0",
     "@radix-ui/react-progress": "^1.1.2",
+    "@radix-ui/react-tabs": "^1.0.0",
     "@tabler/icons-react": "^3.30.0",
     "@types/node": "^20.0.0",
     "@types/react": "^18.0.0",
@@ -53,11 +53,15 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.0.0",
     "zod": "^3.22.0",
-    "zxcvbn": "^4.4.2",
-    "@radix-ui/react-tabs": "^1.0.0"
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@typescript-eslint/eslint-plugin": "^8.25.0",
+    "@typescript-eslint/parser": "^8.25.0",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^5.1.0",
     "prisma": "^5.22.0"
   }
 }

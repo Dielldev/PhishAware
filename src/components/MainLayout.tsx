@@ -2,7 +2,7 @@
 
 import { memo } from 'react';
 import { usePathname } from 'next/navigation';
-import PhishingAttackMap from './PhishingAttackMap';
+
 
 interface Props {
   children: React.ReactNode;
@@ -22,7 +22,7 @@ const MainLayout: React.FC<Props> = memo(function MainLayout({ children }) {
         <div className="container mx-auto px-4 py-8">
           {/* Add the PhishingAttackMap component */}
           <div className="mb-8">
-            <PhishingAttackMap />
+           
           </div>
           
           {children}
