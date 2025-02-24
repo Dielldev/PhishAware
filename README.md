@@ -94,7 +94,7 @@ yarn dev
 
 ## License
 
-ISC License
+MIT License
 
 ## Support
 
