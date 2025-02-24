@@ -1,0 +1,154 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  firstName     String
+  lastName      String
+  email         String    @unique
+  password      String
+  emailVerified DateTime?
+  image         String?
+  termsAccepted Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  quizResults   QuizResult[]
+  challengeResults ChallengeResult[]
+  statistics    UserStatistics?
+  totalXP         Int              @default(0)
+  activeDays      Int              @default(0)
+  lastActive      DateTime         @default(now())
+  progress        UserProgress[]
+  achievements    UserAchievement[]
+  moduleProgress  ModuleCompletion[]
+}
+
+model QuizResult {
+  id        String   @id @default(cuid())
+  userId    String
+  quizId    Int
+  type      String
+  correct   Boolean
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model ChallengeResult {
+  id          String   @id @default(cuid())
+  userId      String
+  challengeId Int
+  type        String
+  correct     Boolean
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model UserStatistics {
+  id                      String   @id @default(cuid())
+  userEmail              String   @unique
+  totalQuizzesAttempted  Int      @default(0)
+  totalQuizzesCorrect    Int      @default(0)
+  totalChallengesAttempted Int    @default(0)
+  totalChallengesCorrect   Int    @default(0)
+  lastActivityAt         DateTime @default(now())
+  user                   User     @relation(fields: [userEmail], references: [email])
+}
+
+// Learning path model
+model LearningPath {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  difficulty  String
+  totalModules Int
+  xpReward    Int
+  icon        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  modules     Module[]
+  progress    UserProgress[]
+}
+
+// Module within a learning path
+model Module {
+  id            String   @id @default(cuid())
+  title         String
+  description   String
+  order         Int
+  type          String  // 'quiz', 'challenge', 'lesson'
+  content       Json
+  xpReward      Int
+  learningPath  LearningPath @relation(fields: [pathId], references: [id])
+  pathId        String
+  completions   ModuleCompletion[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([pathId])
+}
+
+// Track user progress in learning paths
+model UserProgress {
+  id            String   @id @default(cuid())
+  user          User     @relation(fields: [userId], references: [id])
+  userId        String
+  learningPath  LearningPath @relation(fields: [pathId], references: [id])
+  pathId        String
+  progress      Float    @default(0)
+  completed     Boolean  @default(false)
+  lastAccessed  DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([userId, pathId])
+}
+
+// Track individual module completions
+model ModuleCompletion {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  module    Module   @relation(fields: [moduleId], references: [id])
+  moduleId  String
+  score     Float?
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, moduleId])
+}
+
+// Achievement model
+model Achievement {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  icon        String
+  xpReward    Int
+  condition   Json     // Stores conditions for unlocking
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  unlocks     UserAchievement[]
+}
+
+// Track user achievements
+model UserAchievement {
+  id            String      @id @default(cuid())
+  user          User        @relation(fields: [userId], references: [id])
+  userId        String
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+  achievementId String
+  unlockedAt    DateTime   @default(now())
+
+  @@unique([userId, achievementId])
+} 
